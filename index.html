@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+   <title>Dark history of the Middle Ages</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%; scroll-behavior:smooth; font-family:serif; background:#0b0b0f; color:white; overflow-x:hidden;}
+
+
+/* SCROLL SNAP CONTAINER */
+.scroll-container{
+height:100vh;
+width:100%;
+scroll-snap-type:y mandatory;
+overflow-y:scroll;
+}
+
+/* SECTIONS / SLIDES */
+.section{
+height:100vh;
+width:100%;
+scroll-snap-align:start;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+/* BACKGROUND */
+.bg{
+position:absolute;
+width:110%;
+height:110%;
+background-size:cover;
+background-position:center;
+filter:brightness(0.45);
+z-index:1;
+transition:transform 1s ease;
+}
+
+/* FOG EFFECT */
+.fog{
+position:absolute;
+width:200%;
+height:100%;
+background:url('fog.png');
+opacity:0.25;
+animation:fogMove 60s linear infinite;
+z-index:2;
+}
+@keyframes fogMove{
+from{transform:translateX(0);}
+to{transform:translateX(-50%);}
+}
+
+/* PARTICLES */
+.particles{
+position:absolute;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:3;
+}
+
+/* CHARACTER */
+.character{
+position:absolute;
+bottom:0;
+height:90%;
+z-index:4;
+animation:breathing 6s ease-in-out infinite;
+transition:transform 0.3s;
+will-change:transform;
+}
+@keyframes breathing{
+0%{transform:scale(1);}
+50%{transform:scale(1.03);}
+100%{transform:scale(1);}
+}
+
+/* INFO TEXT */
+.info{
+position:absolute;
+left:10%;
+bottom:10%;
+z-index:5;
+max-width:500px;
+}
+.info h1{
+font-size:70px;
+letter-spacing:4px;
+margin-bottom:20px;
+text-shadow:0 0 20px black;
+}
+.info p{
+font-size:20px;
+opacity:0.85;
+}
+
+/* HERO SCREEN SPECIFIC */
+.hero-title{
+font-size:100px;
+text-shadow:0 0 30px #ff0000,0 0 60px #ff6600;
+animation:fadeIn 2s ease forwards;
+opacity:0;
+}
+@keyframes fadeIn{
+0%{opacity:0;}
+100%{opacity:1;}
+}
+.hero-bg{
+position:absolute;
+width:110%;
+height:110%;
+background-size:cover;
+background-position:center;
+z-index:0;
+filter:brightness(0.5);
+animation:zoom 20s ease-in-out infinite alternate;
+}
+@keyframes zoom{
+0%{transform:scale(1);}
+100%{transform:scale(1.05);}
+}
+
+/* КНОПКА */
+#play-btn{
+  position:absolute;
+  bottom:80px;
+  left:50%;
+  transform:translateX(-50%);
+  cursor:pointer;
+  z-index:9999;
+  opacity:1;
+  transition:opacity 0.5s ease;
+}
+
+#play-btn.hide{
+  opacity:0;
+  pointer-events:none;
+}
+
+#play-btn .circle{
+  width:100px;
+  height:100px;
+  border:3px solid #ff0000;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 20px #ff0000,0 0 40px #ff6600;
+  transition:0.3s;
+}
+
+#play-btn .circle:hover{
+  transform: scale(1.1);
+  box-shadow:0 0 30px #ff0000,0 0 60px #ff6600;
+}
+
+#play-btn .triangle{
+  width:0;
+  height:0;
+  border-left:30px solid #ff0000;
+  border-top:15px solid transparent;
+  border-bottom:15px solid transparent;
+  filter:drop-shadow(0 0 5px #ff0000);
+}
+
+/* МОДАЛКА */
+#video-modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.95);
+  z-index:10000;
+  align-items:center;
+  justify-content:center;
+}
+
+/* КОНТЕЙНЕР ВИДЕО */
+#video-container{
+  position:relative;
+  width:80%;
+  max-width:900px;
+}
+
+/* КНОПКА ЗАКРЫТИЯ */
+#close-btn{
+  position:absolute;
+  top:-30px;
+  right:-30px;
+  font-size:50px;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+#close-btn:hover{
+  color:#ff0000;
+}
+
+/* ВИДЕО */
+video{
+  width:100%;
+  border-radius:10px;
+}
+
+
+.info2{
+position:absolute;
+right:10%;
+bottom:10%;
+z-index:5;
+max-width:500px;
+  text-align: right;
+}
+.info2 h1{
+font-size:70px;
+letter-spacing:4px;
+margin-bottom:20px;
+text-shadow:0 0 20px black;
+}
+.info2 p{
+font-size:20px;
+opacity:0.85;
+}
+h1{
+  font-family: 'UnifrakturCook', cursive;
+}
+
+.info h1, .info2 h1{
+  font-family: 'UnifrakturCook', cursive;
+  font-size: 65px;
+  letter-spacing: 3px;
+}
+.bio, .story{
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(0,0,0,0.35);
+  border-left: 2px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(6px);
+  transition: 0.3s;
+}
+
+.bio:hover, .story:hover{
+  background: rgba(0,0,0,0.5);
+  border-left: 2px solid #c9b37e;
+}
+
+/* Заголовки внутри */
+.bio h2, .story h2{
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #c9b37e;
+  letter-spacing: 1px;
+}
+
+/* Список */
+.bio ul{
+  list-style: none;
+}
+
+.bio li{
+  font-size: 14px;
+  margin-bottom: 4px;
+  opacity: 0.9;
+}
+
+/* Текст истории */
+.story p{
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+.voice-btn{
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #c9b37e;
+  color: #c9b37e;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 2px;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.voice-btn:hover{
+  background: #c9b37e;
+  color: black;
+  box-shadow: 0 0 15px #c9b37e;
+  transform: scale(1.05);
+}
+
+.info2 .bio,
+.info2 .story{
+  text-align: right;
+  border-left: none;
+  border-right: 2px solid rgba(255,255,255,0.3);
+}
+
+.info2 .bio:hover,
+.info2 .story:hover{
+  border-right: 2px solid #c9b37e;
+}
+    </style>
+</head>
+<body>
+    <div class="scroll-container">
+
+<!-- HERO SCREEN -->
+<section class="section">
+  <div class="hero-bg" style="background-image:url('https://cdn.leonardo.ai/users/1dd8e5c4-55d4-4f0b-8b47-976c177fc989/generations/1f1215a5-f82d-68e0-8175-609d2761cf43/lucid-origin_cinematic_fantasy_website_banner_wide_composition_four_medieval_female_character-0.jpg')"></div>
+  <canvas class="particles"></canvas>
+  <h1 class="hero-title">Dark history of the Middle Ages</h1>
+<div id="play-btn">
+  <div class="circle">
+    <span class="triangle"></span>
+  </div>
+</div>
+<div id="video-modal">
+  <div id="video-container">
+    <span id="close-btn">&times;</span>
+
+    <video id="hero-video" width="100%" height="500" controls>
+      <source src="https://res.cloudinary.com/dcrze7oaf/video/upload/v1774199944/Storyboard_1_wykohe.mp4" type="video/mp4">
+    </video>
+
+  </div>
+</div>
+</section>
+
+<!-- SLIDE 1 -->
+<section class="section">
+  <div class="bg" style="background-image:url('https://github.com/hanbushra2767-rgb/Foto6/raw/f9cb62c1cb4f423cfa119c0288beb1e043a65a73/Nano_Banana_2_animate_the_uploaded_character_as_a_cinematic_fantasy_banner__the_character_positioned.png')"></div>
+  <div class="fog"></div>
+  <canvas class="particles"></canvas>
+  <img class="character" src="char1.png">
+  <div class="info">
+    <h1>Witch Hunter</h1>
+    <div class="bio">
+      <h2>Biological Traits</h2>
+      <ul>
+        <li>Age:</li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="story">
+      <h2>Story</h2>
+      <p>Fearless hunter wandering medieval streets</p>
+    </div>
+    <audio id="witch hunter-voice" src="https://github.com/hanbushra2767-rgb/-Witch-Hunter/raw/66550bcf989cc361c3b12e39847a55a753a564e3/ElevenLabs_2026-03-18T16_47_28_Priyanka%20-%20Calm%2C%20Neutral%20and%20Relaxed_pvc_sp90_s50_sb75_se0_b_m2%20(online-audio-converter.com).mp3" preload="auto"></audio>
+    <!-- Кнопка воспроизведения -->
+    <button class="voice-btn" onclick="playVoice('witch hunter-voice')">
+  🕯 Whisper</button>
+  </div>
+</section>
+
+<!-- SLIDE 2 -->
+<section class="section">
+  <div class="bg" style="background-image:url('https://github.com/hanbushra2767-rgb/Foto2/raw/b70e13153ca9ab1f022f333c905ed1739d2639b5/Nano_Banana_2_animate_the_uploaded_character_as_a_cinematic_fantasy_banner__the_character_positioned%20(2).png')"></div>
+  <div class="fog"></div>
+  <canvas class="particles"></canvas>
+  <img class="character" src="char2.png">
+  <div class="info2">
+    <h1>Plague Doctor</h1>
+     <div class="bio">
+      <h2>Biological Traits</h2>
+      <ul>
+        <li>Age:</li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="story">
+      <h2>Story</h2>
+ <p>Mysterious and intelligent presence in the dark</p>
+    </div>
+     <audio id="plague doctor-voice" src="https://github.com/hanbushra2767-rgb/Plague-Doctor1/raw/7fe0b44d0383a90180ed17f80eb9ad86beae886c/ElevenLabs_2026-03-18T16_41_02_Emilia%20-%20Young%2C%20British%20and%20Engaging_pvc_sp77_s50_sb75_se0_b_m2.mp3" preload="auto"></audio>
+    <!-- Кнопка воспроизведения -->
+    <button class="voice-btn" onclick="playVoice('plague doctor-voice')">
+  🕯 Whisper</button>
+  </div>
+</section>
+
+<!-- SLIDE 3 -->
+<section class="section">
+  <div class="bg" style="background-image:url('https://github.com/hanbushra2767-rgb/Foto3/raw/86e101e029d4b9ebf9a4dfa8bca8f63d589df457/Nano_Banana_2_animate_the_uploaded_character_as_a_cinematic_fantasy_banner__the_character_positioned%20(1).png')"></div>
+  <div class="fog"></div>
+  <canvas class="particles"></canvas>
+  <img class="character" src="char3.png">
+  <div class="info">
+    <h1>Nun</h1>
+     <div class="bio">
+      <h2>Biological Traits</h2>
+      <ul>
+        <li>Age:</li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="story">
+      <h2>Story</h2>
+    <p>Gentle soul praying in the quiet night</p>
+    </div>
+   <audio id="nun-voice" src="https://github.com/hanbushra2767-rgb/Nun/raw/1e99a4974d777867a479e34775aac2c5f34654b6/ElevenLabs_2026-03-18T16_17_53_Katherine%20-%20Calm%20Luxury%20Narrator_pvc_sp85_s55_sb80_se15_b_m2%20(online-audio-converter.com).mp3" preload="auto"></audio>
+    <!-- Кнопка воспроизведения -->
+    <button class="voice-btn" onclick="playVoice('nun-voice')">
+  🕯 Whisper</button>
+  </div>
+</section>
+  <!-- SLIDE 4 -->
+<section class="section">
+  <div class="bg" style="background-image:url('https://github.com/hanbushra2767-rgb/Foto1/raw/ce134ccfce77dc9ae68a2357db0267c0424bb362/Nano_Banana_2_animate_the_uploaded_character_as_a_cinematic_fantasy_banner__the_character_positioned%20(3).png')"></div>
+  <div class="fog"></div>
+  <canvas class="particles"></canvas>
+  <img class="character" src="char4.png">
+  <div class="info2">
+    <h1>Knight</h1>
+     <div class="bio">
+      <h2>Biological Traits</h2>
+      <ul>
+        <li>Age:</li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="story">
+      <h2>Story</h2>
+    <p>Brave warrior protecting the kingdom</p>
+    </div>
+     <audio id="knight-voice" src="https://github.com/hanbushra2767-rgb/Knight/raw/814877dd8e4966817b57810e2840e8ede6bcaf2b/ElevenLabs_2026-03-18T16_51_37_Claire%20-%20Rhythmic%20and%20Clear%20Narrator_pvc_sp86_s36_sb75_se0_b_m2.mp3" preload="auto"></audio>
+    <button class="voice-btn" onclick="playVoice('knight-voice')">
+  🕯 Whisper</button>
+  </div>
+</section>
+
+</div>
+
+    <script>
+       document.addEventListener("mousemove",e=>{
+const x=(e.clientX/window.innerWidth)-0.5;
+const y=(e.clientY/window.innerHeight)-0.5;
+document.querySelectorAll(".character").forEach(char=>{
+char.style.transform=`translate(${x*25}px,${y*25}px) scale(1.03)`;
+})
+})
+
+/* PARTICLES EFFECT */
+document.querySelectorAll(".particles").forEach(canvas=>{
+const c=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+const particles=[];
+for(let i=0;i<100;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2+1,
+dx:(Math.random()-0.5)*0.2,
+dy:(Math.random()-0.5)*0.2,
+alpha:Math.random()*0.5+0.3
+});
+}
+function animate(){
+c.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach(p=>{
+p.x+=p.dx;
+p.y+=p.dy;
+if(p.x>canvas.width)p.x=0;
+if(p.x<0)p.x=canvas.width;
+if(p.y>canvas.height)p.y=0;
+if(p.y<0)p.y=canvas.height;
+c.beginPath();
+c.arc(p.x,p.y,p.r,0,Math.PI*2);
+c.fillStyle=`rgba(255,255,255,${p.alpha});
+c.fill();
+`})
+requestAnimationFrame(animate);
+}
+animate();
+})
+
+
+const playBtn = document.getElementById("play-btn");
+const modal = document.getElementById("video-modal");
+const closeBtn = document.getElementById("close-btn");
+const video = document.getElementById("hero-video");
+
+playBtn.onclick = () => {
+  modal.style.display = "flex";
+  playBtn.classList.add("hide");
+  video.play();
+};
+
+closeBtn.onclick = () => {
+  modal.style.display = "none";
+  playBtn.classList.remove("hide");
+  video.pause();
+  video.currentTime = 0;
+};
+
+
+
+
+function playVoice(id){
+  let audio = document.getElementById(id);
+  if(!audio){
+    console.error("Audio element not found:", id);
+    return;
+  }
+
+  // Остановить все другие аудио
+  document.querySelectorAll("audio").forEach(a=>{
+    a.pause();
+    a.currentTime = 0;
+  });
+
+  // Воспроизвести нужный голос
+  audio.play();
+}
+
+    </script>
+</body>
+</html>
